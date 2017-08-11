@@ -3,6 +3,7 @@ import numpy as np
 import os
 import pickle
 from miranda_run_algos import *
+import os
 
 # Constants
 DATASET_DIR = r"../data/matrices/"
@@ -16,20 +17,21 @@ def main():
     datasets = acquire_datasets()
     labels = acquire_labels()
 
-    for _ in range(100):
-        for matrix_index in reversed(MATRICES_INDEXES):
-            X = datasets[matrix_index]
-            y = labels[matrix_index]['label']
-            with open(f'out_{matrix_index}.csv', mode='a', encoding='utf8') as file:
-                # Writing header
-                file.write(f'method_name{COLUMN_DELIMITER}score{COLUMN_DELIMITER}params\n')
+    # for _ in range(100):
+    for matrix_index in reversed(MATRICES_INDEXES):
+        X = datasets[matrix_index]
+        y = labels[matrix_index]['label']
+        # with open(f'out_{matrix_index}.csv', mode='a', encoding='utf8') as file:
+        with open(os.devnull, mode='a', encoding='utf8') as file:
+            # Writing header
+            file.write(f'method_name{COLUMN_DELIMITER}score{COLUMN_DELIMITER}params\n')
 
-                # Running all the clustering algorithms
-                print(f'Processing dataset: {matrix_index}')
-                print(f'Dataset shape: {X.shape}')
-                pipeline(X=X, y=y, output_channel=file)
-                print()
-                file.write('\n')
+            # Running all the clustering algorithms
+            print(f'Processing dataset: {matrix_index}')
+            print(f'Dataset shape: {X.shape}')
+            pipeline(X=X, y=y, output_channel=file)
+            print()
+            file.write('\n')
 
 
 def pipeline(X, y, output_channel):
@@ -48,20 +50,15 @@ def pipeline(X, y, output_channel):
                            ]
                            )
 
-    # print_score_and_params(fiveMeansScore=fiveMeansScore,
-    #                        output_channel=output_channel,
-    #                        method_name='Birch',
-    #                        score_and_params=run_birch(X, y))
-
     print_score_and_params(fiveMeansScore=fiveMeansScore,
                            output_channel=output_channel,
                            method_name='KMeans',
                            score_and_params=run_kmeans(X, y))
 
-    print_score_and_params(fiveMeansScore=fiveMeansScore,
-                           output_channel=output_channel,
-                           method_name='Birch',
-                           score_and_params=run_birch(X, y))
+    # print_score_and_params(fiveMeansScore=fiveMeansScore,
+    #                        output_channel=output_channel,
+    #                        method_name='Birch',
+    #                        score_and_params=run_birch(X, y))
 
     print_score_and_params(fiveMeansScore=fiveMeansScore,
                            output_channel=output_channel,

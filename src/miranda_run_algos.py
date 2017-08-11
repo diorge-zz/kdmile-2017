@@ -21,7 +21,8 @@ def run_agglomerative_clustering(X, y):
     element_count, feature_count = X.shape
     scores_and_params = []
 
-    for n_clusters in np.arange(2, element_count):
+    #for n_clusters in np.arange(2, element_count):
+    for n_clusters in [15]:
         for linkage in ["ward", "complete", "average"]:
             labels_pred = AgglomerativeClustering(n_clusters=n_clusters, linkage=linkage) \
                 .fit_predict(X, None)
